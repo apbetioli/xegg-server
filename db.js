@@ -1,50 +1,42 @@
 var models = require('./models');
 var mongoose = require('mongoose');
 
-var dbhost = process.env.OPENSHIFT_MONGODB_DB_HOST || "127.0.0.1";
-var dbport = process.env.OPENSHIFT_MONGODB_DB_PORT || 27017;
-
-var connectDevelopment = function () {
-    mongoose.connect('mongodb://' + dbhost + ':' + dbport + '/xegg', function (errLocal) {
-        if (errLocal) {
-            console.log("mongoose connect error: " + errLocal);
-            console.log("mongoose connect  " + "mongodb://" + dbhost + ":" + dbport + "/xegg");
-        } else {
-            console.log("mongoose connected development");
-        }
-    });
-}
-
-var connectOpenshift = function () {
-    mongoose.connect('mongodb://admin:EptglreXKwDi@' + dbhost + ':' + dbport + '/xegg', function (err) {
+var connectMongo = function (connection_string) {
+    mongoose.connect('mongodb://' + connection_string, function (err) {
         if (err) {
-            console.log("process.env.OPENSHIFT_DB_HOST - " + dbhost);
-            console.log("process.env.OPENSHIFT_DB_PORT - " + dbport);
             console.log("mongoose connect error: " + err);
-
-            connectDevelopment();
+            console.log("connection_string: " + connection_string);
         } else {
-            console.log("mongoose connected openshift");
+            console.log("mongoose connected: " + connection_string);
         }
     });
+
 }
 
 var connect = function () {
-    if (dbhost === '127.0.0.1')
-        connectDevelopment();
-    else
-        connectOpenshift();
+
+    var connection_string = '127.0.0.1:27017/xegg';
+
+    if(process.env.OPENSHIFT_MONGODB_DB_PASSWORD){
+        connection_string = process.env.OPENSHIFT_MONGODB_DB_USERNAME + ":" +
+            process.env.OPENSHIFT_MONGODB_DB_PASSWORD + "@" +
+            process.env.OPENSHIFT_MONGODB_DB_HOST + ':' +
+            process.env.OPENSHIFT_MONGODB_DB_PORT + '/' +
+            process.env.OPENSHIFT_APP_NAME;
+    }
+
+    connectMongo(connection_string);
 }
 
 connect();
 
 new models.createModels(mongoose);
 
-exports.Post = mongoose.model('Post', models.Post, 'Post');
-exports.Tag = mongoose.model('Tag', models.Tag, 'Tag');
-
 exports.db = mongoose.connection.db;
 exports.mongoose = mongoose;
+
+exports.Post = mongoose.model('Post', models.Post, 'Post');
+exports.Tag = mongoose.model('Tag', models.Tag, 'Tag');
 
 
 
