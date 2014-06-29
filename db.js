@@ -5,7 +5,7 @@ var dbhost = process.env.OPENSHIFT_MONGODB_DB_HOST || "127.0.0.1";
 var dbport = process.env.OPENSHIFT_MONGODB_DB_PORT || 27017;
 
 var connectDevelopment = function () {
-    mongoose.connect('mongodb://' + dbhost + ':' + dbport + '/x-egg', function (errLocal) {
+    mongoose.connect('mongodb://' + dbhost + ':' + dbport + '/xegg', function (errLocal) {
         if (errLocal) {
             console.log("mongoose connect error: " + errLocal);
             console.log("mongoose connect  " + "mongodb://" + dbhost + ":" + dbport + "/xegg");

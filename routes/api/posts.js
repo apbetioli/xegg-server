@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var db = require('../db');
+var db = require('../../db');
 var Post = db.Post;
 
 router.get('/', function (req, res, next) {
@@ -33,5 +33,20 @@ router.post('/', function (req, res, next) {
     });
 
 });
+/*
+router.get('/:id', function (req, res, next) {
 
+    Post.find(function (err, posts) {
+        if (err) {
+            console.error(err);
+
+            next(err);
+            return;
+        }
+
+        res.send(posts);
+    });
+
+});
+*/
 module.exports = router;
