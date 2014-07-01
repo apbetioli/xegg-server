@@ -1,4 +1,3 @@
-var models = require('./models');
 var mongoose = require('mongoose');
 
 var connectMongo = function (connection_string) {
@@ -30,13 +29,7 @@ var connect = function () {
 
 connect();
 
-new models.createModels(mongoose);
-
 exports.db = mongoose.connection.db;
-exports.mongoose = mongoose;
-
-exports.Post = mongoose.model('Post', models.Post, 'Post');
-exports.Tag = mongoose.model('Tag', models.Tag, 'Tag');
 
 
 

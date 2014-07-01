@@ -4,14 +4,15 @@ var favicon = require('static-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
-var db = require('./db');
+var restify = require('express-restify-mongoose');
 
 var routes = require('./routes/routes');
 
+var db = require('./db');
+var models = require('./models');
+
 var app = express();
 
-// view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
@@ -22,7 +23,15 @@ app.use(bodyParser.urlencoded());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-routes.use(app);
+routes.configure(app);
+
+var restOptions = {
+    strict: true
+};
+
+restify.serve(app, models.Post, restOptions);
+restify.serve(app, models.Tag, restOptions);
+restify.serve(app, models.Stats, restOptions);
 
 /// catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -49,6 +58,7 @@ if (app.get('env') === 'development') {
 // production error handler
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {
+    console.error(err);
     res.status(err.status || 500);
     res.render('error', {
         message: err.message,
