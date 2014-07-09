@@ -1,9 +1,11 @@
 var mongoose = require('mongoose');
 
 var TagSchema = mongoose.Schema({
-    name: String,
-    image: String,
-    created: Date
+	name      : String,
+	image     : String,
+	language  : String,
+	country   : String,
+	created   : Date
 });
 
 TagSchema.pre('save', function(next) {
@@ -16,12 +18,13 @@ var Tag = mongoose.model('Tag', TagSchema, 'Tag')
 exports.Tag = Tag;
 
 var PostSchema = mongoose.Schema({
-    image: String,
-    description: String,
-    author: String,
-    language: String,
-    tag: String,
-    created: Date
+    image       : String,
+    description : String,
+    author      : String,
+    language    : String,
+    country     : String,
+    tag         : String,
+    created     : Date
 });
 
 PostSchema.pre('save', function(next) {
