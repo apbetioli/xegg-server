@@ -4,12 +4,6 @@ var favicon = require('static-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var restify = require('express-restify-mongoose');
-
-var routes = require('./routes/routes');
-
-var db = require('./db');
-var models = require('./models');
 
 var app = express();
 
@@ -23,48 +17,15 @@ app.use(bodyParser.urlencoded());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+var routes = require('./routes/routes');
 routes.configure(app);
 
-var restOptions = {
-    strict: true
-};
+var db = require('./db');
 
-restify.serve(app, models.Post, restOptions);
-restify.serve(app, models.Tag, restOptions);
-restify.serve(app, models.Stats, restOptions);
+var models = require('./models/models');
+models.createApi(app);
 
-/// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-    var err = new Error('Not Found');
-    err.status = 404;
-    next(err);
-});
-
-/// error handlers
-
-// development error handler
-// will print stacktrace
-if (app.get('env') === 'development') {
-    app.use(function(err, req, res, next) {
-        console.error(err);
-        res.status(err.status || 500);
-        res.render('error', {
-            message: err.message,
-            error: err
-        });
-    });
-}
-
-// production error handler
-// no stacktraces leaked to user
-app.use(function(err, req, res, next) {
-    console.error(err);
-    res.status(err.status || 500);
-    res.render('error', {
-        message: err.message,
-        error: {}
-    });
-});
-
+var handlers = require('./handlers');
+handlers.configure(app);
 
 exports.app = app;
