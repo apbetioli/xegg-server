@@ -74,7 +74,7 @@
 		"karma-firefox-launcher": "~0.1.3",
 		"karma-phantomjs-launcher": "~0.1.2"
 	},
-	"scripts": {  
-    	"postinstall": "export HOME=/var/lib/openshift/[instance-id]/app-root/runtime/repo; ./node_modules/bower/bin/bower install"
-    }
+    "scripts": {
+	    "build-js": "HOME=$HOME/app-root/runtime bower install && r.js -o build-config.js",
+	}
 }
