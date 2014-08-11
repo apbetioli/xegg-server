@@ -75,6 +75,6 @@
 		"karma-phantomjs-launcher": "~0.1.2"
 	},
     "scripts": {
-	    "build-js": "HOME=$HOME/app-root/runtime bower install && r.js -o build-config.js",
+	    "build-js": "HOME=$HOME/app-root/runtime bower install && r.js -o build-config.js"
 	}
 }
