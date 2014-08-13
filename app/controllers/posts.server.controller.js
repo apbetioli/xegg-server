@@ -57,7 +57,7 @@ exports.delete = function(req, res) {
 exports.list = function(req, res) {
 
     var query = Post.find();
-    if(req.query.tag != null)
+    if(req.query.tag)
         query.where('tag').equals(req.query.tag);
 
     query.sort('-created').exec(function(err, posts) {
