@@ -4,6 +4,9 @@ var users = require('../../app/controllers/users'),
 	posts = require('../../app/controllers/posts');
 
 module.exports = function(app) {
+
+    app.param('postId', posts.postByID);
+
 	app.route('/posts')
 		.get(posts.list)
 		.post(users.requiresLogin, posts.create);
@@ -12,8 +15,6 @@ module.exports = function(app) {
 		.get(posts.read)
 		.put(users.requiresLogin, posts.hasAuthorization, posts.update)
 		.delete(users.requiresLogin, posts.hasAuthorization, posts.delete);
-
-	app.param('postId', posts.postByID);
 
     //TODO adequar com novo modelo
 

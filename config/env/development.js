@@ -18,7 +18,7 @@ module.exports = {
 	google: {
 		clientID: process.env.GOOGLE_ID || '305809749117-sfojlpe8k816vq82rj2eb9jsqb19bieh.apps.googleusercontent.com',
 		clientSecret: process.env.GOOGLE_SECRET || '5kb1z_qy6mvIX2FDm-npYt0L',
-		callbackURL: 'http://localhost:3000/auth/google/callback'
+		callbackURL: 'http://www.x-egg.com/auth/google/callback'
 	},
 	linkedin: {
 		clientID: process.env.LINKEDIN_ID || 'APP_ID',

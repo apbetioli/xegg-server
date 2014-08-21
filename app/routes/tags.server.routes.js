@@ -4,6 +4,7 @@ var users = require('../../app/controllers/users'),
 	tags = require('../../app/controllers/tags');
 
 module.exports = function(app) {
+
 	app.route('/tags')
 		.get(tags.list)
 		.post(users.requiresLogin, tags.create);

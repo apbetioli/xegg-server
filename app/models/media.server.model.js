@@ -3,11 +3,13 @@
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
-var TagSchema = new Schema({
-    tag: {
+var MediaSchema = new Schema({
+    media: {
+        type: Buffer,
+        required: true
+    },
+    contentType: {
         type: String,
-        trim: true,
-        unique: true,
         required: true
     },
     created: {
@@ -16,5 +18,4 @@ var TagSchema = new Schema({
     }
 });
 
-mongoose.model('Tag', TagSchema, 'Tag');
-
+mongoose.model('Media', MediaSchema, 'Media');

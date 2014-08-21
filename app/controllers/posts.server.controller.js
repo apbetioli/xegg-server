@@ -3,11 +3,25 @@
 var mongoose = require('mongoose'),
 	errorHandler = require('./errors'),
     Post = mongoose.model('Post'),
+    Tag = mongoose.model('Tag'),
 	_ = require('lodash');
+
+function saveTags(post) {
+    if (post.tags) {
+        post.tags.forEach(function (tag) {
+            var newTag = new Tag({
+                tag: tag
+            });
+            newTag.save();
+        });
+    }
+}
 
 exports.create = function(req, res) {
 	var post = new Post(req.body);
 	post.user = req.user;
+
+    saveTags(post);
 
 	post.save(function(err) {
 		if (err) {
@@ -57,10 +71,16 @@ exports.delete = function(req, res) {
 exports.list = function(req, res) {
 
     var query = Post.find();
-    if(req.query.tag)
-        query.where('tag').equals(req.query.tag);
 
-    query.sort('-created').exec(function(err, posts) {
+    var tag = req.query.tag;
+    if(tag)
+        query.where('tag').equals(tag);
+
+    var sort = req.query.sort;
+    if(!sort)
+        sort = '-created';
+
+    query.sort(sort).exec(function(err, posts) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)

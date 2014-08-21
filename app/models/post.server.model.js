@@ -4,33 +4,34 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 var PostSchema = new Schema({
-    image: {
+    media: {
+        type: Schema.ObjectId,
+        ref: 'Media',
+        required: true
+    },
+    title: {
         type: String,
         default: '',
-        trim: true,
-        required: 'Image cannot be blank'
-    },
-    description: {
-        type: String,
-        default: '',
         trim: true
     },
-    author: String, //TODO FK
-    language: {
-        type: String,
-        default: 'pt',
-        trim: true
+    user: {
+        type: Schema.ObjectId,
+        ref: 'User',
+        required: true
     },
-    country: {
-        type: String,
-        default: 'BR',
-        trim: true
-    },
-    tag: String, //TODO FK
     created: {
         type: Date,
         default: Date.now
-    }
+    },
+    likes: {
+        type: Number,
+        default: 1
+    },
+    comments: {
+        type: Number,
+        default: 0
+    },
+    tags: [String]
 });
 
 mongoose.model('Post', PostSchema, 'Post');
