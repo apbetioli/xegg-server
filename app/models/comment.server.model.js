@@ -6,16 +6,18 @@ var mongoose = require('mongoose'),
 var CommentSchema = new Schema({
     post: {
         type: Schema.ObjectId,
-        ref: 'Post'
+        ref: 'Post',
+        required: 'Post is required'
     },
     comment: {
         type: String,
         trim: true,
-        required: true
+        required: 'Comment is required'
     },
     user: {
         type: Schema.ObjectId,
-        ref: 'User'
+        ref: 'User',
+        required: 'User is required'
     },
     created: {
         type: Date,

@@ -16,15 +16,15 @@ module.exports = function(app) {
 		.put(users.requiresLogin, posts.hasAuthorization, posts.update)
 		.delete(users.requiresLogin, posts.hasAuthorization, posts.delete);
 
-    //TODO adequar com novo modelo
+
 
     app.route('/api/v1/posts')
         .get(posts.list)
-        .post(posts.create);
+        .post(users.requiresToken, posts.create);
 
     app.route('/api/v1/posts/:postId')
         .get(posts.read)
-        .put(posts.update)
-        .delete(posts.delete);
+        .put(users.requiresToken, posts.hasAuthorization, posts.update)
+        .delete(users.requiresToken, posts.hasAuthorization, posts.delete);
 
 };

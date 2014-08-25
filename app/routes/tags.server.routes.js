@@ -16,12 +16,10 @@ module.exports = function(app) {
 
 	app.param('tagId', tags.tagByID);
 
-    app.route('/api/v1/tags')
-        .get(tags.list)
-        .post(tags.create);
 
-    app.route('/tags/:tagId')
-        .get(tags.read)
-        .put(tags.update)
-        .delete(tags.delete);
+    app.route('/api/v1/tags')
+        .get(tags.list);
+
+    app.route('/api/v1/tags/:tagId')
+        .get(tags.read);
 };

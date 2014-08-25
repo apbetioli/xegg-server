@@ -16,40 +16,45 @@ describe('Tag Controller Test:', function() {
             tag: 'automodelismo'
         });
 
+        tag.save();
+
         done();
     });
 
-    describe('Method Post', function () {
+    describe('Method Get', function () {
 
-        it('should return bad request when try to post without tag', function (done) {
-            tag.tag = '';
+        it('should return some tags', function (done) {
 
             request(url)
-                .post('/api/v1/tags')
-                .send(tag)
-                .expect(400)
+                .get('/api/v1/tags')
+                .expect(200)
+                .expect('Content-type', 'application/json; charset=utf-8')
                 .end(function (err, res) {
-                    if (err) {
+                    if (err)
                         throw err;
-                    }
+
+                    var tags = res.body;
+                    (1).should.be.equal(tags.length);
+                    tags[0].tag.should.be.equal('automodelismo');
+
                     done();
                 });
         });
 
-        it('should save a tag', function(done){
+        it('should return one tags', function (done) {
 
             request(url)
-                .post('/api/v1/tags')
-                .send(tag)
+                .get('/api/v1/tags/' + tag._id)
                 .expect(200)
-                .expect('Content-Type', /json/)
-                .end(function(err,res) {
-                    if (err) {
+                .expect('Content-type', 'application/json; charset=utf-8')
+                .end(function (err, res) {
+                    if (err)
                         throw err;
-                    }
-                    res.body.should.have.property('_id');
-                    res.body.tag.should.equal('automodelismo');
-                    res.body.created.should.not.equal(null);
+
+                    var newTag = res.body;
+                    should.exist(newTag);
+                    newTag.tag.should.be.equal('automodelismo');
+
                     done();
                 });
         });

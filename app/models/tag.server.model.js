@@ -7,8 +7,8 @@ var TagSchema = new Schema({
     tag: {
         type: String,
         trim: true,
-        unique: true,
-        required: true
+        unique: 'Duplicated tag. Please, inform another tag.',
+        required: 'Tag is required'
     },
     created: {
         type: Date,

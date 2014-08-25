@@ -16,7 +16,7 @@ var UserSchema = new Schema({
     email: {
         type: String,
         trim: true,
-        unique: true,
+        unique: 'E-mail already in use. Please choose another.',
         validate: [validateLocalStrategyProperty, 'Please fill in your email'],
         match: [/.+\@.+\..+/, 'Please fill a valid email address']
     },
@@ -61,6 +61,9 @@ var UserSchema = new Schema({
     },
     resetPasswordExpires: {
         type: Date
+    },
+    token: {
+        type: String
     }
 });
 

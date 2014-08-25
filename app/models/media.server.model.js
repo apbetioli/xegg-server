@@ -6,11 +6,11 @@ var mongoose = require('mongoose'),
 var MediaSchema = new Schema({
     media: {
         type: Buffer,
-        required: true
+        required: 'Media is required'
     },
     contentType: {
         type: String,
-        required: true
+        required: 'Content type is required'
     },
     created: {
         type: Date,

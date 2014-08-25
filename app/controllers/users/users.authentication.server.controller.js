@@ -1,17 +1,42 @@
 'use strict';
 
-/**
- * Module dependencies.
- */
 var _ = require('lodash'),
 	errorHandler = require('../errors'),
 	mongoose = require('mongoose'),
 	passport = require('passport'),
+    crypto = require('crypto'),
 	User = mongoose.model('User');
 
-/**
- * Signup
- */
+function generateToken() {
+    return new Buffer(crypto.randomBytes(16).toString('base64'), 'base64');
+}
+
+exports.requiresToken = function (req, res, next) {
+
+    if (!req.headers.token)
+        return res.status(401).send({
+            message: 'Token is required. Please sign in.'
+        });
+
+
+    User.findOne({token: req.headers.token}).exec(function (err, user) {
+        if (err)
+            return res.status(400).send(err);
+
+        if(!user)
+            return res.status(401).send({
+                message: 'Invalid token.'
+            });
+
+        req.login(user, function (err) {
+            if (err)
+                return res.status(400).send(err);
+
+            next();
+        });
+    });
+};
+
 exports.signup = function(req, res) {
 	// For security measurement we remove the roles from the req.body object
 	delete req.body.roles;
@@ -22,7 +47,6 @@ exports.signup = function(req, res) {
 
 	// Add missing user fields
 	user.provider = 'local';
-	user.displayName = user.firstName + ' ' + user.lastName;
 
 	// Then save the user 
 	user.save(function(err) {
@@ -46,9 +70,6 @@ exports.signup = function(req, res) {
 	});
 };
 
-/**
- * Signin after passport authentication
- */
 exports.signin = function(req, res, next) {
 	passport.authenticate('local', function(err, user, info) {
 		if (err || !user) {
@@ -62,6 +83,9 @@ exports.signin = function(req, res, next) {
 				if (err) {
 					res.status(400).send(err);
 				} else {
+                    user.token = generateToken();
+                    user.save();
+
 					res.jsonp(user);
 				}
 			});
@@ -69,17 +93,11 @@ exports.signin = function(req, res, next) {
 	})(req, res, next);
 };
 
-/**
- * Signout
- */
 exports.signout = function(req, res) {
 	req.logout();
 	res.redirect('/');
 };
 
-/**
- * OAuth callback
- */
 exports.oauthCallback = function(strategy) {
 	return function(req, res, next) {
 		passport.authenticate(strategy, function(err, user, redirectURL) {
@@ -97,9 +115,6 @@ exports.oauthCallback = function(strategy) {
 	};
 };
 
-/**
- * Helper function to save or update a OAuth user profile
- */
 exports.saveOAuthUserProfile = function(req, providerUserProfile, done) {
 	if (!req.user) {
 		// Define a search query fields
@@ -168,9 +183,6 @@ exports.saveOAuthUserProfile = function(req, providerUserProfile, done) {
 	}
 };
 
-/**
- * Remove OAuth provider
- */
 exports.removeOAuthProvider = function(req, res, next) {
 	var user = req.user;
 	var provider = req.param('provider');

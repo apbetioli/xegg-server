@@ -7,7 +7,7 @@ var PostSchema = new Schema({
     media: {
         type: Schema.ObjectId,
         ref: 'Media',
-        required: true
+        required: 'Media is required'
     },
     title: {
         type: String,
@@ -17,7 +17,7 @@ var PostSchema = new Schema({
     user: {
         type: Schema.ObjectId,
         ref: 'User',
-        required: true
+        required: 'User is required'
     },
     created: {
         type: Date,

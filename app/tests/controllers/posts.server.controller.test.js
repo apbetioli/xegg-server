@@ -10,13 +10,34 @@ var Post = mongoose.model('Post'),
     Tag = mongoose.model('Tag');
 
 var url = 'http://localhost:3001';
-var user, post, media;
+var user, post, media, loggedUser;
 
-//TODO autenticar user para funcionar a regra do usuario
+function clear() {
+    Post.remove().exec();
+    Tag.remove().exec();
+    User.remove().exec();
+    Media.remove().exec();
+}
+
+function signin(user, done) {
+    request(url)
+        .post('/auth/signin')
+        .send(user)
+        .end(function (err, res) {
+            if(err)
+                throw err;
+
+            loggedUser = res.body;
+            should.exist(loggedUser.email);
+
+            done();
+        });
+}
 
 describe('Post Controller Test:', function () {
 
     beforeEach(function (done) {
+
         user = new User({
             email: 'alexandre@test.com',
             username: 'alexandre',
@@ -29,17 +50,19 @@ describe('Post Controller Test:', function () {
         });
 
         user.save(function (err) {
-            should.not.exists(err);
+            if(err)
+                throw err;
 
             media.save(function () {
 
                 post = new Post({
                     media: media,
+                    user: user,
                     title: 'Bora off road! #automodelismo #offroad',
                     tags: ['automodelismo', 'offroad']
                 });
 
-                done();
+                signin({username:'alexandre', password:'password'}, done);
             });
         });
     });
@@ -50,13 +73,12 @@ describe('Post Controller Test:', function () {
 
             request(url)
                 .post('/api/v1/posts')
+                .set('token', loggedUser.token)
                 .send(post)
-                .expect(200)
-                .expect('Content-Type', /json/)
                 .end(function (err, res) {
-                    if (err) {
+                    if(err)
                         throw err;
-                    }
+
                     var p = res.body;
 
                     p.should.have.property('_id');
@@ -72,6 +94,21 @@ describe('Post Controller Test:', function () {
 
                 });
         });
+
+        it('should show error of invalid token', function (done) {
+            request(url)
+                .post('/api/v1/posts')
+                .set('token', 'invalid')
+                .send(post)
+                .expect(401)
+                .end(function (err, res) {
+                    if(err)
+                        throw err;
+
+                    done();
+                });
+        });
+
     });
 
     describe('Method Get', function () {
@@ -79,16 +116,17 @@ describe('Post Controller Test:', function () {
         it('should get a post', function (done) {
 
             post.save(function (err) {
-                should.not.exist(err);
+                if(err)
+                    throw err;
 
                 request(url)
                     .get('/api/v1/posts')
                     .expect(200)
                     .expect('Content-Type', /json/)
                     .end(function (err, res) {
-                        if (err) {
+                        if (err)
                             throw err;
-                        }
+
                         var posts = res.body;
                         posts.should.have.length(1);
 
@@ -108,10 +146,7 @@ describe('Post Controller Test:', function () {
 
 
     afterEach(function (done) {
-        Post.remove().exec();
-        Tag.remove().exec();
-        User.remove().exec();
-        Media.remove().exec();
+        clear();
         done();
     });
 });
