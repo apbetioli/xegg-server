@@ -16,6 +16,7 @@ function clear() {
 describe('User Controller Test:', function () {
 
     beforeEach(function (done) {
+        clear();
 
         user = new User({
             email: 'alexandre@test.com',
@@ -49,10 +50,14 @@ describe('User Controller Test:', function () {
 
                         var u = res.body;
                         should.exist(u.token);
+                        should.not.exist(u.salt);
+                        should.not.exist(u.password);
 
                         User.findOne({token: u.token}).exec(function(err, user){
                             should.not.exist(err);
                             should.exist(user);
+
+                            user.password.should.not.be.equal('')
 
                             done();
                         });

@@ -9,9 +9,15 @@ var Tag = mongoose.model('Tag');
 var url = 'http://localhost:3001';
 var tag;
 
+function clear() {
+    Tag.remove().exec();
+}
+
 describe('Tag Controller Test:', function() {
 
     beforeEach(function (done) {
+        clear();
+
         tag = new Tag({
             tag: 'automodelismo'
         });
@@ -61,7 +67,7 @@ describe('Tag Controller Test:', function() {
     });
 
     afterEach(function (done) {
-        Tag.remove().exec();
+        clear();
         done();
     });
 });

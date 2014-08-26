@@ -37,6 +37,7 @@ function signin(user, done) {
 describe('Post Controller Test:', function () {
 
     beforeEach(function (done) {
+        clear();
 
         user = new User({
             email: 'alexandre@test.com',

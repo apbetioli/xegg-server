@@ -41,29 +41,27 @@ exports.signup = function(req, res) {
 	// For security measurement we remove the roles from the req.body object
 	delete req.body.roles;
 
-	// Init Variables
-	var user = new User(req.body);
-	var message = null;
+    var message = null;
 
-	// Add missing user fields
+    var user = new User(req.body);
 	user.provider = 'local';
+    user.token = generateToken();
 
-	// Then save the user 
 	user.save(function(err) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
-			// Remove sensitive data before login
-			user.password = undefined;
-			user.salt = undefined;
+            var u = new User(user);
+            u.password = undefined;
+            u.salt = undefined;
 
-			req.login(user, function(err) {
+			req.login(u, function(err) {
 				if (err) {
 					res.status(400).send(err);
 				} else {
-					res.jsonp(user);
+					res.jsonp(u);
 				}
 			});
 		}
@@ -75,18 +73,19 @@ exports.signin = function(req, res, next) {
 		if (err || !user) {
 			res.status(400).send(info);
 		} else {
-			// Remove sensitive data before login
-			user.password = undefined;
-			user.salt = undefined;
 
-			req.login(user, function(err) {
+            user.token = generateToken();
+            user.save();
+
+            var u = new User(user);
+            u.password = undefined;
+            u.salt = undefined;
+
+			req.login(u, function(err) {
 				if (err) {
 					res.status(400).send(err);
 				} else {
-                    user.token = generateToken();
-                    user.save();
-
-					res.jsonp(user);
+					res.jsonp(u);
 				}
 			});
 		}
