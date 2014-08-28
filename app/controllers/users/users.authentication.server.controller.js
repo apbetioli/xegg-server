@@ -41,27 +41,23 @@ exports.signup = function(req, res) {
 	// For security measurement we remove the roles from the req.body object
 	delete req.body.roles;
 
-    var message = null;
-
     var user = new User(req.body);
 	user.provider = 'local';
     user.token = generateToken();
-
 	user.save(function(err) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
-            var u = new User(user);
-            u.password = undefined;
-            u.salt = undefined;
+            user.password = undefined;
+            user.salt = undefined;
 
-			req.login(u, function(err) {
+			req.login(user, function(err) {
 				if (err) {
 					res.status(400).send(err);
 				} else {
-					res.jsonp(u);
+					res.jsonp(user);
 				}
 			});
 		}
@@ -74,18 +70,14 @@ exports.signin = function(req, res, next) {
 			res.status(400).send(info);
 		} else {
 
-            user.token = generateToken();
-            user.save();
+            user.password = undefined;
+            user.salt = undefined;
 
-            var u = new User(user);
-            u.password = undefined;
-            u.salt = undefined;
-
-			req.login(u, function(err) {
+			req.login(user, function(err) {
 				if (err) {
 					res.status(400).send(err);
 				} else {
-					res.jsonp(u);
+					res.jsonp(user);
 				}
 			});
 		}
