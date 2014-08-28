@@ -8,7 +8,7 @@ var _ = require('lodash'),
 	User = mongoose.model('User');
 
 function generateToken() {
-    return new Buffer(crypto.randomBytes(16).toString('base64'), 'base64');
+    return crypto.randomBytes(16).toString('base64');
 }
 
 exports.requiresToken = function (req, res, next) {

@@ -35,18 +35,16 @@ describe('User Controller Test:', function () {
         it('should authenticate and generate a token', function (done) {
 
             user.save(function (err) {
-                if(err)
-                    throw err;
+                if(err) throw err;
 
-                var credentials = {username: 'alexandre', password: 'password'};
+                var credentials = {email: 'alexandre@test.com', password: 'password'};
 
                 request(url)
                     .post('/auth/signin')
                     .send(credentials)
                     .expect(200)
                     .end(function (err, res) {
-                        if(err)
-                            throw err;
+                        if(err) throw err;
 
                         var u = res.body;
                         should.exist(u.token);
@@ -57,7 +55,7 @@ describe('User Controller Test:', function () {
                             should.not.exist(err);
                             should.exist(user);
 
-                            user.password.should.not.be.equal('')
+                            user.password.should.not.be.equal('');
 
                             done();
                         });

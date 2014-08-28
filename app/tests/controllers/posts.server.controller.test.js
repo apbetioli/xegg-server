@@ -63,7 +63,7 @@ describe('Post Controller Test:', function () {
                     tags: ['automodelismo', 'offroad']
                 });
 
-                signin({username:'alexandre', password:'password'}, done);
+                signin({email:'alexandre@test.com', password:'password'}, done);
             });
         });
     });

@@ -24,8 +24,7 @@ function signin(user, done) {
         .post('/auth/signin')
         .send(user)
         .end(function (err, res) {
-            if (err)
-                throw err;
+            if (err) throw err;
 
             loggedUser = res.body;
             should.exist(loggedUser.email);
@@ -62,18 +61,15 @@ describe('Comment Controller Test:', function () {
         });
 
         user.save(function (err) {
-            if (err)
-                throw err;
+            if (err) throw err;
 
             media.save(function (err) {
-                if (err)
-                    throw err;
+                if (err) throw err;
 
                 post.save(function (err) {
-                    if (err)
-                        throw err;
+                    if (err) throw err;
 
-                    signin({username: 'alexandre', password: 'password'}, done);
+                    signin({email: 'alexandre@test.com', password: 'password'}, done);
                 });
             });
         });
@@ -88,8 +84,7 @@ describe('Comment Controller Test:', function () {
                 .set('token', loggedUser.token)
                 .send(comment)
                 .end(function (err, res) {
-                    if (err)
-                        throw err;
+                    if (err) throw err;
 
                     var c = res.body;
 
@@ -113,8 +108,7 @@ describe('Comment Controller Test:', function () {
             comment.post = post;
             comment.user = user;
             comment.save(function (err) {
-                if(err)
-                    throw err;
+                if (err) throw err;
 
                 request(url)
                     .get('/api/v1/posts/' + post._id + '/comments')
