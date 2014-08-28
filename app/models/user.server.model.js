@@ -68,13 +68,18 @@ var UserSchema = new Schema({
 });
 
 UserSchema.pre('save', function (next) {
-    if (this.password && this.password.length > 6) {
-        this.salt = new Buffer(crypto.randomBytes(16).toString('base64'), 'base64');
-        this.password = this.hashPassword(this.password);
-    }
+    if(!this.salt)
+        this.setPassword(this.password);
 
     next();
 });
+
+UserSchema.methods.setPassword = function (newPassword) {
+    if (newPassword && newPassword.length > 6) {
+        this.salt = new Buffer(crypto.randomBytes(16).toString('base64'), 'base64');
+        this.password = this.hashPassword(newPassword);
+    }
+};
 
 UserSchema.methods.hashPassword = function (password) {
     if (this.salt && password) {

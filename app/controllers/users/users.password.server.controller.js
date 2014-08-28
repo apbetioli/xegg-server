@@ -1,8 +1,5 @@
 'use strict';
 
-/**
- * Module dependencies.
- */
 var _ = require('lodash'),
 	errorHandler = require('../errors'),
 	mongoose = require('mongoose'),
@@ -14,20 +11,17 @@ var _ = require('lodash'),
 	async = require('async'),
 	crypto = require('crypto');
 
-/**
- * Forgot for reset password (forgot POST)
- */
 exports.forgot = function(req, res, next) {
 	async.waterfall([
-		// Generate random token
+
 		function(done) {
 			crypto.randomBytes(20, function(err, buffer) {
 				var token = buffer.toString('hex');
 				done(err, token);
 			});
 		},
-		// Lookup user by username
-		function(token, done) {
+
+        function(token, done) {
 			if (req.body.username) {
 				User.findOne({
 					username: req.body.username
@@ -64,7 +58,7 @@ exports.forgot = function(req, res, next) {
 				done(err, emailHTML, user);
 			});
 		},
-		// If valid email, send reset email using service
+
 		function(emailHTML, user, done) {
 			var smtpTransport = nodemailer.createTransport(config.mailer.options);
 			var mailOptions = {
@@ -88,9 +82,6 @@ exports.forgot = function(req, res, next) {
 	});
 };
 
-/**
- * Reset password GET from email token
- */
 exports.validateResetToken = function(req, res) {
 	User.findOne({
 		resetPasswordToken: req.params.token,
@@ -106,13 +97,8 @@ exports.validateResetToken = function(req, res) {
 	});
 };
 
-/**
- * Reset password POST from email token
- */
 exports.reset = function(req, res, next) {
-	// Init Variables
 	var passwordDetails = req.body;
-	var message = null;
 
 	async.waterfall([
 
@@ -125,7 +111,7 @@ exports.reset = function(req, res, next) {
 			}, function(err, user) {
 				if (!err && user) {
 					if (passwordDetails.newPassword === passwordDetails.verifyPassword) {
-						user.password = passwordDetails.newPassword;
+						user.setPassword(passwordDetails.newPassword);
 						user.resetPasswordToken = undefined;
 						user.resetPasswordExpires = undefined;
 
@@ -167,7 +153,7 @@ exports.reset = function(req, res, next) {
 				done(err, emailHTML, user);
 			});
 		},
-		// If valid email, send reset email using service
+
 		function(emailHTML, user, done) {
 			var smtpTransport = nodemailer.createTransport(config.mailer.options);
 			var mailOptions = {
@@ -186,13 +172,8 @@ exports.reset = function(req, res, next) {
 	});
 };
 
-/**
- * Change Password
- */
 exports.changePassword = function(req, res, next) {
-	// Init Variables
 	var passwordDetails = req.body;
-	var message = null;
 
 	if (req.user) {
 		if (passwordDetails.newPassword) {
@@ -200,7 +181,7 @@ exports.changePassword = function(req, res, next) {
 				if (!err && user) {
 					if (user.authenticate(passwordDetails.currentPassword)) {
 						if (passwordDetails.newPassword === passwordDetails.verifyPassword) {
-							user.password = passwordDetails.newPassword;
+                            user.setPassword(passwordDetails.newPassword);
 
 							user.save(function(err) {
 								if (err) {

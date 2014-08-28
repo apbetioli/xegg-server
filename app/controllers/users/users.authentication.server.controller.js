@@ -38,7 +38,6 @@ exports.requiresToken = function (req, res, next) {
 };
 
 exports.signup = function(req, res) {
-	// For security measurement we remove the roles from the req.body object
 	delete req.body.roles;
 
     var user = new User(req.body);
@@ -70,16 +69,26 @@ exports.signin = function(req, res, next) {
 			res.status(400).send(info);
 		} else {
 
-            user.password = undefined;
-            user.salt = undefined;
+            user.token = generateToken();
+            user.save(function(err) {
+                if (err) {
+                    res.status(400).send(err);
+                } else {
 
-			req.login(user, function(err) {
-				if (err) {
-					res.status(400).send(err);
-				} else {
-					res.jsonp(user);
-				}
-			});
+                    user.password = undefined;
+                    user.salt = undefined;
+
+                    req.login(user, function(err) {
+                        if (err) {
+                            res.status(400).send(err);
+                        } else {
+                            res.jsonp(user);
+                        }
+                    });
+                }
+            });
+
+
 		}
 	})(req, res, next);
 };
