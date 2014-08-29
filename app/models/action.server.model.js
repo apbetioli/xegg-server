@@ -14,10 +14,6 @@ var ActionSchema = new Schema({
         ref: 'Post',
         required: true
     },
-    created: {
-        type: Date,
-        default: Date.now
-    },
     like: {
         type: Boolean,
         default: false

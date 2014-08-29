@@ -5,9 +5,13 @@ var mongoose = require('mongoose'),
 
 var PostSchema = new Schema({
     media: {
-        type: Schema.ObjectId,
-        ref: 'Media',
-        required: 'Media is required'
+        url: {
+            type: String,
+            required: 'URL is required'
+        },
+        contentType: {
+            type: String
+        }
     },
     title: {
         type: String,
@@ -23,13 +27,15 @@ var PostSchema = new Schema({
         type: Date,
         default: Date.now
     },
-    likes: {
-        type: Number,
-        default: 1
-    },
-    comments: {
-        type: Number,
-        default: 0
+    stats: {
+        likes: {
+            type: Number,
+            default: 1
+        },
+        comments: {
+            type: Number,
+            default: 0
+        }
     },
     tags: [String]
 });
