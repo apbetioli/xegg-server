@@ -4,10 +4,15 @@ var should = require('should'),
     mongoose = require('mongoose'),
     User = mongoose.model('User'),
     Comment = mongoose.model('Comment'),
-    Media = mongoose.model('Media'),
     Post = mongoose.model('Post');
 
-var postUser, commentUser, post, comment, media;
+var postUser, commentUser, post, comment;
+
+function clear() {
+    Comment.remove().exec();
+    Post.remove().exec();
+    User.remove().exec();
+}
 
 describe('Comment Model Unit Tests:', function () {
     beforeEach(function (done) {
@@ -23,38 +28,30 @@ describe('Comment Model Unit Tests:', function () {
             password: 'password'
         });
 
-        media = new Media({
-            media: 'teste',
-            contentType: 'image/gif'
-        });
-
         postUser.save(function (err) {
             should.not.exists(err);
 
-            media.save(function (err) {
-                should.not.exists(err);
-
-                post = new Post({
-                    media: media,
-                    title: 'Bora off road! #automodelismo #offroad',
-                    user: postUser,
-                    tags: ['automodelismo', 'offroad']
-                });
-
-                post.save(function (err) {
-                    should.not.exists(err);
-
-                    comment = new Comment({
-                        post: post,
-                        comment: 'Fera',
-                        user: commentUser
-                    });
-
-                    done();
-                });
-
+            post = new Post({
+                media: {
+                    url: 'teste',
+                    contentType: 'image/gif'
+                },
+                title: 'Bora off road! #automodelismo #offroad',
+                user: postUser,
+                tags: ['automodelismo', 'offroad']
             });
 
+            post.save(function (err) {
+                should.not.exists(err);
+
+                comment = new Comment({
+                    post: post,
+                    comment: 'Fera',
+                    user: commentUser
+                });
+
+                done();
+            });
 
         });
     });
@@ -99,9 +96,7 @@ describe('Comment Model Unit Tests:', function () {
     });
 
     afterEach(function (done) {
-        Comment.remove().exec();
-        Post.remove().exec();
-        User.remove().exec();
+        clear();
         done();
     });
 });

@@ -36,8 +36,7 @@ describe('Tag Controller Test:', function() {
                 .expect(200)
                 .expect('Content-type', 'application/json; charset=utf-8')
                 .end(function (err, res) {
-                    if (err)
-                        throw err;
+                    if (err) throw err;
 
                     var tags = res.body;
                     (1).should.be.equal(tags.length);
@@ -52,10 +51,9 @@ describe('Tag Controller Test:', function() {
             request(url)
                 .get('/api/v1/tags/' + tag._id)
                 .expect(200)
-                .expect('Content-type', 'application/json; charset=utf-8')
+                .expect('Content-Type', /json/)
                 .end(function (err, res) {
-                    if (err)
-                        throw err;
+                    if (err) throw err;
 
                     var newTag = res.body;
                     should.exist(newTag);

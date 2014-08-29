@@ -4,10 +4,9 @@ var should = require('should'),
     mongoose = require('mongoose'),
     User = mongoose.model('User'),
     Tag = mongoose.model('Tag'),
-    Media = mongoose.model('Media'),
     Post = mongoose.model('Post');
 
-var user, post, media;
+var user, post;
 
 describe('Post Model Unit Tests:', function () {
     beforeEach(function (done) {
@@ -17,26 +16,21 @@ describe('Post Model Unit Tests:', function () {
             password: 'password'
         });
 
-        media = new Media({
-            media: 'teste',
-            contentType: 'image/gif'
-        });
 
         user.save(function (err) {
             should.not.exists(err);
 
-            media.save(function (err) {
-                should.not.exists(err);
-
                 post = new Post({
-                    media: media,
+                    media: {
+                        url: 'teste',
+                        contentType: 'image/gif'
+                    },
                     title: 'Bora off road! #automodelismo #offroad',
                     user: user,
                     tags: ['automodelismo', 'offroad']
                 });
 
                 done();
-            });
         });
     });
 
@@ -46,7 +40,8 @@ describe('Post Model Unit Tests:', function () {
                 should.not.exist(err);
                 should.exist(post.created);
                 should.exist(post.user);
-                post.likes.should.be.equal(1);
+                post.stats.likes.should.be.equal(1);
+                post.stats.comments.should.be.equal(0);
                 done();
             });
         });

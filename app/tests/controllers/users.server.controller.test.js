@@ -52,7 +52,6 @@ describe('User Controller Test:', function () {
                         should.not.exist(u.password);
 
                         User.findOne({token: u.token}).exec(function(err, user){
-                            should.not.exist(err);
                             should.exist(user);
 
                             user.password.should.not.be.equal('');
