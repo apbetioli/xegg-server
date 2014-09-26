@@ -21,10 +21,7 @@ describe('Post Model Unit Tests:', function () {
             should.not.exists(err);
 
                 post = new Post({
-                    media: {
-                        url: 'teste',
-                        contentType: 'image/gif'
-                    },
+                    url: 'teste',
                     title: 'Bora off road! #automodelismo #offroad',
                     user: user,
                     tags: ['automodelismo', 'offroad']
@@ -42,15 +39,6 @@ describe('Post Model Unit Tests:', function () {
                 should.exist(post.user);
                 post.stats.likes.should.be.equal(1);
                 post.stats.comments.should.be.equal(0);
-                done();
-            });
-        });
-
-        it('should be able to save without title', function (done) {
-            post.title = '';
-
-            return post.save(function (err) {
-                should.not.exist(err);
                 done();
             });
         });
@@ -82,8 +70,8 @@ describe('Post Model Unit Tests:', function () {
             });
         });
 
-        it('should show an error when try to save without media', function (done) {
-            post.media = '';
+        it('should show an error when try to save without url', function (done) {
+            post.url = '';
 
             return post.save(function (err) {
                 should.exist(err);

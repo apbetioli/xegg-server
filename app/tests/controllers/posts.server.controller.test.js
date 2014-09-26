@@ -39,10 +39,7 @@ describe('Post Controller Test:', function () {
         clear();
 
         post = new Post({
-            media: {
-                url: 'http://some.gif',
-                contentType: 'image/gif'
-            },
+            url: 'http://some.gif',
             title: '#automodelismo Bora off road! #offroad'
         });
 

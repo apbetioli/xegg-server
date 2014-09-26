@@ -32,10 +32,7 @@ describe('Comment Model Unit Tests:', function () {
             should.not.exists(err);
 
             post = new Post({
-                media: {
-                    url: 'teste',
-                    contentType: 'image/gif'
-                },
+                url: 'teste',
                 title: 'Bora off road! #automodelismo #offroad',
                 user: postUser,
                 tags: ['automodelismo', 'offroad']

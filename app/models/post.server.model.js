@@ -4,14 +4,9 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 var PostSchema = new Schema({
-    media: {
-        url: {
-            type: String,
-            required: 'URL is required'
-        },
-        contentType: {
-            type: String
-        }
+    url: {
+        type: String,
+        required: 'URL is required'
     },
     title: {
         type: String,
