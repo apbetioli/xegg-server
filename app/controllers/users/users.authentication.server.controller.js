@@ -13,13 +13,15 @@ function generateToken() {
 
 exports.requiresToken = function (req, res, next) {
 
-    if (!req.headers.token)
-        return res.status(401).send({
-            message: 'Token is required. Please sign in.'
-        });
+    //TODO descomentar
 
+//    if (!req.headers.token)
+//        return res.status(401).send({
+//            message: 'Token is required. Please sign in.'
+//        });
+//
 
-    User.findOne({token: req.headers.token}).exec(function (err, user) {
+    User.findOne(/*{token: req.headers.token}*/).exec(function (err, user) {
         if (err)
             return res.status(400).send(err);
 
