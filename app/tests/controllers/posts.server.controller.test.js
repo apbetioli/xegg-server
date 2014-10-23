@@ -87,9 +87,6 @@ describe('Post Controller Test:', function () {
                     should.exist(p._id);
                     should.exist(p.created);
                     should.exist(p.user);
-                    should.exist(p.stats);
-                    should.exist(p.stats.comments);
-                    should.exist(p.stats.likes);
 
                     done();
                 });
@@ -130,9 +127,6 @@ describe('Post Controller Test:', function () {
                         should.exist(p._id);
                         should.exist(p.created);
                         should.exist(p.user);
-                        should.exist(p.stats);
-                        should.exist(p.stats.comments);
-                        should.exist(p.stats.likes);
 
                         done();
                     });

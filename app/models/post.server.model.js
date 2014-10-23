@@ -22,16 +22,6 @@ var PostSchema = new Schema({
         type: Date,
         default: Date.now
     },
-    stats: {
-        likes: {
-            type: Number,
-            default: 1
-        },
-        comments: {
-            type: Number,
-            default: 0
-        }
-    },
     tags: [String]
 });
 
