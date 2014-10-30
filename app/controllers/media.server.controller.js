@@ -66,7 +66,10 @@ exports.getMediaData = function (req, res) {
     Media.findOne({_id: id}, function (err, media) {
         if (err) throw err;
 
-        res.writeHead(200, {'Content-Type': media.contentType });
+        res.writeHead(200, {
+            'Content-Type': media.contentType,
+            'Cache-Control': 'public, max-age=315360000'
+        });
         res.end(media.data, 'binary');
 
     });
