@@ -28,6 +28,10 @@ module.exports = function(app) {
         .put(users.requiresToken, posts.hasAuthorization, posts.update)
         .delete(users.requiresToken, posts.hasAuthorization, posts.delete);
 
+
+    app.route('/api/v1/posts')
+        .get(posts.setCache);
+
     restify.serve(app, Post);
 
 };
