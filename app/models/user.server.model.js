@@ -23,8 +23,8 @@ var UserSchema = new Schema({
     username: {
         type: String,
         trim: true,
-        unique: [true, 'Username already in use. Please choose another.']
-        //required: [true, 'Please fill in a username']
+        unique: [true, 'Username already in use. Please choose another.'],
+        required: [true, 'Please fill in a username']
     },
     password: {
         type: String,
