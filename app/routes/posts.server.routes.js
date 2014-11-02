@@ -29,8 +29,8 @@ module.exports = function(app) {
         .delete(users.requiresToken, posts.hasAuthorization, posts.delete);
 
 
-    app.route('/api/v1/posts')
-        .get(posts.setCache);
+    //app.route('/api/v1/posts')
+    //    .get(posts.setCache);
 
     restify.serve(app, Post);
 
