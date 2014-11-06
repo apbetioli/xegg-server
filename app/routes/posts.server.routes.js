@@ -8,7 +8,6 @@ var users = require('../../app/controllers/users'),
 
 module.exports = function(app) {
 
-
 	app.route('/posts')
 		.get(posts.list)
 		.post(users.requiresLogin, posts.create);
@@ -21,7 +20,10 @@ module.exports = function(app) {
     app.param('postId', posts.postByID);
 
 
-    restify.serve(app, Post);
+    app.route('/api/v1/posts')
+        .post(posts.saveTags);
+
+    restify.serve(app, Post, {version: '/v1', strict: true});
 
 
     app.route('/api/v2/posts')
@@ -31,5 +33,5 @@ module.exports = function(app) {
         .put(users.requiresToken, posts.hasAuthorization)
         .delete(users.requiresToken, posts.hasAuthorization);
 
-    restify.serve(app, Post, {version: '/v2'});
+    restify.serve(app, Post, {version: '/v2', strict: true});
 };

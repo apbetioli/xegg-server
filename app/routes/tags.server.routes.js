@@ -22,4 +22,5 @@ module.exports = function(app) {
 
     app.route('/api/v1/tags/:tagId')
         .get(tags.read);
+
 };

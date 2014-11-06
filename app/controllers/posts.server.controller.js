@@ -27,6 +27,8 @@ exports.saveTags = function(req, res, next) {
         newTag.save();
     });
 
+    req.body = post;
+
     next();
 }
 
