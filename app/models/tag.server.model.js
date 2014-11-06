@@ -16,5 +16,5 @@ var TagSchema = new Schema({
     }
 });
 
-mongoose.model('Tag', TagSchema, 'Tag');
+mongoose.model('Tag', TagSchema);
 

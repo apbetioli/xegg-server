@@ -24,4 +24,4 @@ var PostSchema = new Schema({
     tags: [String]
 });
 
-mongoose.model('Post', PostSchema, 'Post');
+mongoose.model('Post', PostSchema);

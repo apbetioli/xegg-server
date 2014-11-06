@@ -11,4 +11,4 @@ var FeedbackSchema = new Schema({
     }
 });
 
-mongoose.model('Feedback', FeedbackSchema, 'Feedback');
+mongoose.model('Feedback', FeedbackSchema);

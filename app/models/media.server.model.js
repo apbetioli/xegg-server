@@ -14,4 +14,4 @@ var MediaSchema = new Schema({
     }
 });
 
-mongoose.model('Media', MediaSchema, 'Media');
+mongoose.model('Media', MediaSchema);
