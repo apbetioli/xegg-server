@@ -68,7 +68,7 @@ var UserSchema = new Schema({
 });
 
 UserSchema.pre('save', function (next) {
-    if(!this.salt)
+    if (!this.salt)
         this.setPassword(this.password);
 
     next();

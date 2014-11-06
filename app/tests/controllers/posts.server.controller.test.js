@@ -5,15 +5,14 @@ var request = require('supertest');
 var mongoose = require('mongoose');
 
 var Post = mongoose.model('Post'),
-    Comment = mongoose.model('Comment'),
     User = mongoose.model('User'),
     Tag = mongoose.model('Tag');
 
+var prefix = '/api/v2';
 var url = 'http://localhost:3001';
 var user, post, loggedUser;
 
 function clear() {
-    Comment.remove().exec();
     Post.remove().exec();
     Tag.remove().exec();
     User.remove().exec();
@@ -58,7 +57,7 @@ describe('Post Controller Test:', function () {
 
     it('should get unauthorized if the token is invalid', function (done) {
         request(url)
-            .post('/api/v1/posts')
+            .post(prefix + '/posts')
             .set('token', 'invalid')
             .send(post)
             .expect(401)
@@ -74,7 +73,7 @@ describe('Post Controller Test:', function () {
         beforeEach(function (done) {
 
             request(url)
-                .post('/api/v1/posts')
+                .post(prefix + '/posts')
                 .set('token', loggedUser.token)
                 .send(post)
                 .expect(200)
@@ -86,7 +85,6 @@ describe('Post Controller Test:', function () {
 
                     should.exist(p._id);
                     should.exist(p.created);
-                    should.exist(p.user);
 
                     done();
                 });
@@ -111,7 +109,7 @@ describe('Post Controller Test:', function () {
             it('should get some posts', function (done) {
 
                 request(url)
-                    .get('/api/v1/posts')
+                    .get(prefix + '/posts')
                     .expect(200)
                     .expect('Content-Type', /json/)
                     .end(function (err, res) {
@@ -126,53 +124,12 @@ describe('Post Controller Test:', function () {
                         p.title.should.equal('#automodelismo Bora off road! #offroad');
                         should.exist(p._id);
                         should.exist(p.created);
-                        should.exist(p.user);
 
                         done();
                     });
             });
         });
 
-        describe('Comment Controller Test', function () {
-
-            var comment;
-
-            beforeEach(function (done) {
-
-                comment = new Comment({
-                    comment: 'cool'
-                });
-
-                done();
-            });
-
-            describe('Method Post', function () {
-
-                it('should save a comment', function (done) {
-
-                    request(url)
-                        .post('/api/v1/posts/' + post._id + '/comments')
-                        .set('token', loggedUser.token)
-                        .send(comment)
-                        .end(function (err, res) {
-                            if (err) throw err;
-
-                            var c = res.body;
-
-                            should.exist(c._id);
-                            should.exist(c.created);
-                            should.exist(c.post);
-                            should.exist(c.user);
-                            c.comment.should.equal('cool');
-
-                            done();
-
-                        });
-                });
-
-            });
-
-        });
     });
 
     afterEach(function (done) {

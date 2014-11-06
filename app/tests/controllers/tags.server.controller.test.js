@@ -6,6 +6,7 @@ var mongoose = require('mongoose');
 
 var Tag = mongoose.model('Tag');
 
+var prefix = '/api/v1';
 var url = 'http://localhost:3001';
 var tag;
 
@@ -32,7 +33,7 @@ describe('Tag Controller Test:', function() {
         it('should return some tags', function (done) {
 
             request(url)
-                .get('/api/v1/tags')
+                .get(prefix + '/tags')
                 .expect(200)
                 .expect('Content-type', 'application/json; charset=utf-8')
                 .end(function (err, res) {
@@ -49,7 +50,7 @@ describe('Tag Controller Test:', function() {
         it('should return one tags', function (done) {
 
             request(url)
-                .get('/api/v1/tags/' + tag._id)
+                .get(prefix + '/tags/' + tag._id)
                 .expect(200)
                 .expect('Content-Type', /json/)
                 .end(function (err, res) {

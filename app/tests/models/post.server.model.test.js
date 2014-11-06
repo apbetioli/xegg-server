@@ -37,8 +37,6 @@ describe('Post Model Unit Tests:', function () {
                 should.not.exist(err);
                 should.exist(post.created);
                 should.exist(post.user);
-                post.stats.likes.should.be.equal(1);
-                post.stats.comments.should.be.equal(0);
                 done();
             });
         });

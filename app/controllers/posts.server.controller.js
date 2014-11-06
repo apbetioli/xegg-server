@@ -6,7 +6,8 @@ var mongoose = require('mongoose'),
     Tag = mongoose.model('Tag'),
     _ = require('lodash');
 
-function saveTags(post) {
+exports.saveTags = function(req, res, next) {
+    var post = new Post(req.body);
 
     post.tags = [];
 
@@ -15,9 +16,9 @@ function saveTags(post) {
 
     do {
         match = regex.exec(post.title);
-        if(match)
+        if (match)
             post.tags.push(match[1]);
-    } while(match);
+    } while (match);
 
     post.tags.forEach(function (tag) {
         var newTag = new Tag({
@@ -25,6 +26,8 @@ function saveTags(post) {
         });
         newTag.save();
     });
+
+    next();
 }
 
 exports.create = function (req, res) {
@@ -120,9 +123,3 @@ exports.hasAuthorization = function (req, res, next) {
     next();
 };
 
-exports.setCache = function(req, res, next) {
-
-    res.header('Cache-Control', 'public, max-age=315360000');
-
-    next();
-};
