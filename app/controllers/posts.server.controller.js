@@ -6,7 +6,7 @@ var mongoose = require('mongoose'),
     Tag = mongoose.model('Tag'),
     _ = require('lodash');
 
-exports.saveTags = function(req, res, next) {
+var saveTags = function(req, res, next) {
     var post = new Post(req.body);
 
     post.tags = [];
@@ -30,7 +30,9 @@ exports.saveTags = function(req, res, next) {
     req.body = post;
 
     next();
-}
+};
+
+exports.saveTags = saveTags;
 
 exports.create = function (req, res) {
     var post = new Post(req.body);
