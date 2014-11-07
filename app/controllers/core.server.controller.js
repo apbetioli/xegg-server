@@ -14,7 +14,7 @@ exports.setCache = function (req, res, next) {
 };
 
 exports.gitPull = function(req, res) {
-    exec('git pull origin master',
+    exec('sudo -u ubuntu git pull origin master',
         function (error, stdout, stderr) {
             res.writeHead(200, {'Content-Type': 'text/plain'});
 
