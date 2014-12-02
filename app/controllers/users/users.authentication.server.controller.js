@@ -44,16 +44,16 @@ exports.signup = function (req, res) {
     user.token = generateToken();
     user.save(function (err) {
         if (err) {
-            return res.status(400).send({
-                message: errorHandler.getErrorMessage(err)
-            });
+            user.message = err.message;
+            return res.status(400).jsonp(user);
         } else {
             user.password = undefined;
             user.salt = undefined;
 
             req.login(user, function (err) {
                 if (err) {
-                    res.status(400).send(err);
+                    user.message = err.message;
+                    res.status(400).jsonp(user);
                 } else {
                     res.jsonp(user);
                 }
@@ -65,13 +65,16 @@ exports.signup = function (req, res) {
 exports.signin = function (req, res, next) {
     passport.authenticate('local', function (err, user, info) {
         if (err || !user) {
-            res.status(400).send(info);
+            user = new User();
+            user.message = err !=null ?  err.message : (info !=null ? info.message : "Houve um erro no servidor!");
+            res.status(400).jsonp(user);
         } else {
 
             user.token = generateToken();
             user.save(function (err) {
                 if (err) {
-                    res.status(400).send(err);
+                    user.message = err.message;
+                    res.status(400).jsonp(user);
                 } else {
 
                     user.password = undefined;
@@ -79,7 +82,8 @@ exports.signin = function (req, res, next) {
 
                     req.login(user, function (err) {
                         if (err) {
-                            res.status(400).send(err);
+                            user.message = err.message;
+                            res.status(400).jsonp(user);
                         } else {
                             res.jsonp(user);
                         }

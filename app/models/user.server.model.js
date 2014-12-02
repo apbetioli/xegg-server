@@ -64,6 +64,9 @@ var UserSchema = new Schema({
     },
     token: {
         type: String
+    },
+    message: {
+        type: String
     }
 });
 
