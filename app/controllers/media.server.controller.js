@@ -15,7 +15,9 @@ exports.upload = function (req, res) {
 
         if (err) {
             console.log(err);
-            throw err;
+            res.writeHead(500, {'content-type': 'text/plain'});
+            res.end(err);
+            return;
         }
 
         var file = files.image;
@@ -27,7 +29,12 @@ exports.upload = function (req, res) {
             media.data = fs.readFileSync(file.path);
             media.contentType = type;
             media.save(function (err, saved) {
-                if (err) throw err;
+                if (err)  {
+		    console.log(err);
+		    res.writeHead(500, {'content-type': 'text/plain'});
+		    res.end(err);
+		    return;
+                }
 
                 fs.unlink(file.path, function (err) {
                     if (err)
@@ -61,7 +68,12 @@ exports.getMediaData = function (req, res) {
     var id = req.params.id;
 
     Media.findOne({_id: id}, function (err, media) {
-        if (err) throw err;
+        if (err) {
+	    console.log(err);
+            res.writeHead(500, {'content-type': 'text/plain'});
+            res.end(err);
+            return;
+        }
 
         res.writeHead(200, {
             'Content-Type': media.contentType,
