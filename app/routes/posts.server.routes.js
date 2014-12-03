@@ -14,8 +14,7 @@ module.exports = function(app) {
 
 	app.route('/posts/:postId')
 		.get(posts.read)
-		.put(users.requiresLogin, posts.hasAuthorization, posts.update)
-		.delete(users.requiresLogin, posts.hasAuthorization, posts.delete);
+		.put(users.requiresLogin, posts.hasAuthorization, posts.update);
 
     app.param('postId', posts.postByID);
 
