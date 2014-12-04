@@ -15,9 +15,8 @@ var PostSchema = new Schema({
     },
     user: {
         type: Schema.ObjectId,
-        ref: 'User'
-        //,
-        //required: 'User is required'
+        ref: 'User',
+        required: 'User is required'
     },
     created: {
         type: Date,

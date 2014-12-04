@@ -8,6 +8,7 @@ var users = require('../../app/controllers/users'),
 
 module.exports = function(app) {
 
+    /*
 	app.route('/posts')
 		.get(posts.list)
 		.post(users.requiresLogin, posts.create);
@@ -17,12 +18,12 @@ module.exports = function(app) {
 		.put(users.requiresLogin, posts.hasAuthorization, posts.update);
 
     app.param('postId', posts.postByID);
-
+    */
 
     /***************************************************/
 
     app.route('/api/v1/posts')
-        .post(users.requiresToken, posts.saveTags);
+        .post(users.requiresToken, posts.saveTags, posts.create);
 
     app.route('/api/v1/posts/:id')
         .put(users.requiresToken, posts.hasAuthorization)

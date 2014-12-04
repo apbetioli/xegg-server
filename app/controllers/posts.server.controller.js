@@ -9,7 +9,6 @@ var mongoose = require('mongoose'),
 var saveTags = function(req, res, next) {
 
     var post = new Post(req.body);
-    post.user = req.user;
     post.tags = [];
 
     var regex = /(?:^|\W)#(\w+)(?!\w)/g;
@@ -35,11 +34,9 @@ var saveTags = function(req, res, next) {
 
 exports.saveTags = saveTags;
 
-exports.create = function (req, res) {
+var create = function (req, res) {
     var post = new Post(req.body);
     post.user = req.user;
-
-    saveTags(post);
 
     post.save(function (err) {
         if (err) {
@@ -51,6 +48,8 @@ exports.create = function (req, res) {
         }
     });
 };
+
+exports.create = create;
 
 exports.read = function (req, res) {
     res.jsonp(req.post);
