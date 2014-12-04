@@ -32,6 +32,7 @@ exports.requiresToken = function (req, res, next) {
                 return res.status(400).send(err);
 
             req.user = user;
+            req.body.user = user;
 
             next();
         });

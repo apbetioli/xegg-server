@@ -36,7 +36,7 @@ exports.saveTags = saveTags;
 
 var create = function (req, res) {
     var post = new Post(req.body);
-    post.user = req.user;
+    //post.user = req.user;
 
     post.save(function (err) {
         if (err) {
