@@ -7,8 +7,9 @@ var mongoose = require('mongoose'),
     _ = require('lodash');
 
 var saveTags = function(req, res, next) {
-    var post = new Post(req.body);
 
+    var post = new Post(req.body);
+    post.user = req.user;
     post.tags = [];
 
     var regex = /(?:^|\W)#(\w+)(?!\w)/g;

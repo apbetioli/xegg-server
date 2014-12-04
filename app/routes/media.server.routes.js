@@ -9,10 +9,6 @@ module.exports = function(app) {
         .get(media.getMediaData);
 
     app.route('/upload')
-        .get(media.uploadForm)
-        .post(media.upload);
-
-    app.route('/api/v2/upload')
         .post(users.requiresToken, media.upload);
 
 };

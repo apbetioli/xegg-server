@@ -31,6 +31,8 @@ exports.requiresToken = function (req, res, next) {
             if (err)
                 return res.status(400).send(err);
 
+            req.user = user;
+
             next();
         });
     });
@@ -66,7 +68,7 @@ exports.signin = function (req, res, next) {
     passport.authenticate('local', function (err, user, info) {
         if (err || !user) {
             user = new User();
-            user.message = err !=null ?  err.message : (info !=null ? info.message : "Houve um erro no servidor!");
+            user.message = err !== null ?  err.message : (info !== null ? info.message : 'Houve um erro no servidor!');
             res.status(400).jsonp(user);
         } else {
 

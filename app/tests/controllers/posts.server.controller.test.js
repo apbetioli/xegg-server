@@ -8,7 +8,7 @@ var Post = mongoose.model('Post'),
     User = mongoose.model('User'),
     Tag = mongoose.model('Tag');
 
-var prefix = '/api/v2';
+var prefix = '/api/v1';
 var url = 'http://localhost:3001';
 var user, post, loggedUser;
 

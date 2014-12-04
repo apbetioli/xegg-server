@@ -19,18 +19,14 @@ module.exports = function(app) {
     app.param('postId', posts.postByID);
 
 
+    /***************************************************/
+
     app.route('/api/v1/posts')
-        .post(posts.saveTags);
-
-    restify.serve(app, Post, {version: '/v1', strict: true});
-
-
-    app.route('/api/v2/posts')
         .post(users.requiresToken, posts.saveTags);
 
-    app.route('/api/v2/posts/:id')
+    app.route('/api/v1/posts/:id')
         .put(users.requiresToken, posts.hasAuthorization)
         .delete(users.requiresToken, posts.hasAuthorization);
 
-    restify.serve(app, Post, {version: '/v2', strict: true});
+    restify.serve(app, Post, {version: '/v1', strict: true});
 };
