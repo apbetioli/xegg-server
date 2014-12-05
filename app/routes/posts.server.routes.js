@@ -1,7 +1,8 @@
 'use strict';
 
 var users = require('../../app/controllers/users'),
-	posts = require('../../app/controllers/posts'),
+    posts = require('../../app/controllers/posts'),
+    core = require('../../app/controllers/core'),
     mongoose = require('mongoose'),
     Post = mongoose.model('Post'),
     restify = require('express-restify-mongoose');
@@ -23,11 +24,13 @@ module.exports = function(app) {
     /***************************************************/
 
     app.route('/api/v1/posts')
-        .post(users.requiresToken, posts.saveTags, posts.create);
+    	.get(core.log)
+        .post(core.log, users.requiresToken, posts.saveTags, posts.create);
 
     app.route('/api/v1/posts/:id')
-        .put(users.requiresToken, posts.hasAuthorization)
-        .delete(users.requiresToken, posts.hasAuthorization);
+    	.get(core.log)
+        .put(core.log, users.requiresToken, posts.hasAuthorization)
+        .delete(core.log, users.requiresToken, posts.hasAuthorization);
 
     restify.serve(app, Post, {version: '/v1', strict: true});
 };

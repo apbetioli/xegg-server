@@ -2,7 +2,9 @@
 
 var exec = require('exec'),
     mongoose = require('mongoose'),
-    Result = mongoose.model('Result');
+    Log = mongoose.model('Log');
+
+var emit = function(){};
 
 exports.index = function (req, res) {
     res.render('index', {
@@ -33,12 +35,54 @@ exports.gitPull = function(req, res) {
         });
 };
 
-exports.dashboard = function(req, res) {
+exports.mapReduce = function(req, res, next) {
 
-    var query = Result.find(req.query.filter);
-    
-    query.exec(function (err, results) {
-         res.jsonp(results);
-    });
+	var mr = {};
+
+	mr.map = function() {
+		var day = Date.UTC(this.date.getFullYear(), this.date.getMonth(), this.date.getDate());
+		emit({url: this.url, date: new Date(day)}, {count: 1});
+	};
+
+	mr.reduce = function(key, values) {
+		var count = 0;
+
+		for(var v in values){
+			count += values[v].count;
+		}
+
+		return {count: count};
+	};
+
+	mr.out =  {replace: 'results'};
+
+	var two_weeks_ago = new Date(Date.now() - 60 * 60 * 24 * 14 * 1000);	
+	mr.query = {date: {'$gt': two_weeks_ago}};
+
+	mr.verbose = true;
+
+	Log.mapReduce(mr, function (err, model, stats) {
+		if(err) {
+			res.end('Erro');
+			return;
+		}
+		console.log('map reduce took %d ms', stats.processtime);
+
+		next();
+	});
+
+};
+
+
+exports.log = function(req, res, next) {
+
+	next();
+
+	if(res.statusCode === 200 || res.statusCode === 304) {
+		var log = new Log();
+		log.url = req.path;
+		log.method = req.method;
+		log.save();
+	}	
 
 };

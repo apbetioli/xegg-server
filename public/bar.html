@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+.bar {
+  fill: orange;
+}
+
+.bar:hover {
+  fill: brown;
+}
+
+.axis {
+  font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.x.axis path {
+  display: none;
+}
+
+</style>
+<body>
+<script src="d3.v3.min.js"></script>
+<script>
+
+var xhr = new XMLHttpRequest();
+xhr.onreadystatechange = function() {
+  if (xhr.readyState == 4) {
+    var data = JSON.parse(xhr.responseText);
+    init(data);
+  }
+}
+xhr.open("GET", '/api/v1/results?query={"_id.url":"/signup"}', true);
+xhr.send();
+
+/*
+var data = [
+	{
+		"_id": {
+			"date": "2014-12-04T00:00:00.000Z",
+			"url": "/signup"
+		},
+		"value": {
+			"count": 9
+		}
+	},
+	{
+		"_id": {
+			"date": "2014-12-05T00:00:00.000Z",
+			"url": "/signup"
+		},
+		"value": {
+			"count": 3
+		}
+	}
+];
+*/
+
+
+var correctDates = function(data) {
+	var iso = d3.time.format("%Y-%m-%dT%H:%M:%S.%LZ");
+	var dateformat = d3.time.format("%d/%m/%Y");
+
+	for(i in data) {
+		data[i]._id.date = dateformat(iso.parse(data[i]._id.date));
+	};
+};
+
+var init = function(data) {
+
+
+correctDates(data);
+
+var margin = {top: 20, right: 20, bottom: 30, left: 40},
+    width = 480 - margin.left - margin.right,
+    height = 250 - margin.top - margin.bottom;
+
+var x = d3.scale.ordinal()
+    .rangeRoundBands([0, width], .1);
+
+var y = d3.scale.linear()
+    .range([height, 0]);
+
+var xAxis = d3.svg.axis()
+    .scale(x)
+    .orient("bottom");
+
+var yAxis = d3.svg.axis()
+    .scale(y)
+    .orient("left")
+    .ticks(10);
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+
+  x.domain(data.map(function(d) { return d._id.date; }));
+  y.domain([0, d3.max(data, function(d) { return d.value.count; }) ]);
+
+  svg.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(xAxis);
+
+  svg.append("g")
+      .attr("class", "y axis")
+      .call(yAxis)
+    .append("text")
+      .attr("y", -15)
+      .attr("dy", ".71em")
+      .style("text-anchor", "end")
+      .text("count");
+
+  svg.selectAll(".bar")
+      .data(data)
+    .enter().append("rect")
+      .attr("class", "bar")
+      .attr("x", function(d) { return x( d._id.date ); })
+      .attr("width", x.rangeBand())
+      .attr("y", function(d) { return y(d.value.count); })
+      .attr("height", function(d) { return height - y(d.value.count); });
+
+};
+
+</script>
