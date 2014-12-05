@@ -1,6 +1,8 @@
 'use strict';
 
-var exec = require('exec');
+var exec = require('exec'),
+    mongoose = require('mongoose'),
+    Result = mongoose.model('Result');
 
 exports.index = function (req, res) {
     res.render('index', {
@@ -31,4 +33,12 @@ exports.gitPull = function(req, res) {
         });
 };
 
+exports.dashboard = function(req, res) {
 
+    var query = Result.find(req.query.filter);
+    
+    query.exec(function (err, results) {
+         res.jsonp(results);
+    });
+
+};

@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = {
-	db: 'mongodb://127.0.0.1:27017/xegg-dev',
+	db: 'mongodb://127.0.0.1:27017/test',
 	app: {
         title: 'x-egg.com - DEVELOPMENT ENVIRONMENT'
 	},

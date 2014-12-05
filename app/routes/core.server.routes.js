@@ -7,6 +7,8 @@ module.exports = function(app) {
     app.route('/gitpull')
         .post(core.gitPull)
         .get(core.gitPull);
+        
+        app.route('/dashboard').get(core.dashboard);
 
 };
 
