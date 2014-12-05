@@ -4,7 +4,8 @@ var exec = require('exec'),
     mongoose = require('mongoose'),
     Log = mongoose.model('Log');
 
-var emit = function(){};
+var emit = function () {
+};
 
 exports.index = function (req, res) {
     res.render('index', {
@@ -17,7 +18,7 @@ exports.setCache = function (req, res, next) {
     next();
 };
 
-exports.gitPull = function(req, res) {
+exports.gitPull = function (req, res) {
 
     console.log('Executando git pull ...');
     console.log(req.body);
@@ -35,54 +36,67 @@ exports.gitPull = function(req, res) {
         });
 };
 
-exports.mapReduce = function(req, res, next) {
+exports.mapReduce = function (req, res, next) {
 
-	var mr = {};
+    var mr = {};
 
-	mr.map = function() {
-		var day = Date.UTC(this.date.getFullYear(), this.date.getMonth(), this.date.getDate());
-		emit({url: this.url, date: new Date(day)}, {count: 1});
-	};
+    mr.map = function () {
+        var day = Date.UTC(this.date.getFullYear(), this.date.getMonth(), this.date.getDate());
+        emit({url: this.url, date: new Date(day)}, {count: 1});
+    };
 
-	mr.reduce = function(key, values) {
-		var count = 0;
+    mr.reduce = function (key, values) {
+        var count = 0;
 
-		for(var v in values){
-			count += values[v].count;
-		}
+        for (var v in values) {
+            count += values[v].count;
+        }
 
-		return {count: count};
-	};
+        return {count: count};
+    };
 
-	mr.out =  {replace: 'results'};
+    mr.out = {replace: 'results'};
 
-	var two_weeks_ago = new Date(Date.now() - 60 * 60 * 24 * 14 * 1000);	
-	mr.query = {date: {'$gt': two_weeks_ago}};
+    var two_weeks_ago = new Date(Date.now() - 60 * 60 * 24 * 14 * 1000);
+    mr.query = {date: {'$gt': two_weeks_ago}};
 
-	mr.verbose = true;
+    mr.verbose = true;
 
-	Log.mapReduce(mr, function (err, model, stats) {
-		if(err) {
-			res.end('Erro');
-			return;
-		}
-		console.log('map reduce took %d ms', stats.processtime);
+    Log.mapReduce(mr, function (err, model, stats) {
+        if (err) {
+            console.log(err);
+            res.end('Erro');
+            return;
+        }
+        //console.log('Map reduce took %d ms', stats.processtime);
 
-		next();
-	});
+        next();
+    });
 
 };
 
 
-exports.log = function(req, res, next) {
+exports.log = function (req, res, next) {
 
-	next();
+    next();
 
-	if(res.statusCode === 200 || res.statusCode === 304) {
-		var log = new Log();
-		log.url = req.path;
-		log.method = req.method;
-		log.save();
-	}	
+    if (res.statusCode === 200 || res.statusCode === 304) {
+        var log = new Log();
+        log.url = req.path;
+        log.method = req.method;
+        log.save();
+    }
 
+};
+
+exports.dashboard = function (req, res) {
+
+    var query = req.query.query;
+    if (!query)
+        query = '/api/v1/posts';
+
+    res.render('templates/dashboard', {
+        wsUrl: 'ws://' + req.headers.host.replace(':3000', '') + ':4000',
+        query: query
+    });
 };
