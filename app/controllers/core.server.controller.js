@@ -64,7 +64,6 @@ exports.mapReduce = function (req, res, next) {
 
     Log.mapReduce(mr, function (err, model, stats) {
         if (err) {
-            console.log(err);
             res.end('Erro');
             return;
         }
