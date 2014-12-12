@@ -1,7 +1,8 @@
 'use strict';
 
 var mongoose = require('mongoose'),
-    Log = mongoose.model('Log');
+    Log = mongoose.model('Log'),
+    httpPort = process.env.PORT || 3000;
 
 var emit = function () {
     /* Somente para não dar erro no mapreduce */
@@ -46,7 +47,9 @@ exports.mapReduce = function (req, res, next) {
 };
 
 var port = function() {
-    return (process.env.PORT || 3000) + 1;
+    var port = parseInt(httpPort) + 1;
+    console.log('ws port ' + port);
+    return port;
 };
 
 exports.port = port;
@@ -57,8 +60,11 @@ exports.dashboard = function (req, res) {
     if (!query)
         query = '/api/v1/posts';
 
+    var wsUrl = 'ws://' + req.headers.host.replace(':' + httpPort, '') + ':' + port();
+    console.log(wsUrl);
+
     res.render('templates/dashboard', {
-        wsUrl: 'ws://' + req.headers.host.replace(':3000', '') + ':' + port(),
+        wsUrl: wsUrl,
         query: query
     });
 };
