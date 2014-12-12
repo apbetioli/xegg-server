@@ -4,6 +4,7 @@ var mongoose = require('mongoose'),
     errorHandler = require('./errors'),
     Post = mongoose.model('Post'),
     Tag = mongoose.model('Tag'),
+    Like = mongoose.model('Like'),
     _ = require('lodash');
 
 var saveTags = function(req, res, next) {
@@ -71,44 +72,6 @@ exports.update = function (req, res) {
     });
 };
 
-exports.delete = function (req, res) {
-    var post = req.post;
-
-    post.remove(function (err) {
-        if (err) {
-            return res.status(400).send({
-                message: errorHandler.getErrorMessage(err)
-            });
-        } else {
-            res.jsonp(post);
-        }
-    });
-};
-
-exports.list = function (req, res) {
-
-    var query = Post.find();
-
-    //FIXME remodelar
-    var tag = req.query.tag;
-    if (tag)
-        query.where('tag').equals(tag);
-
-    var sort = req.query.sort;
-    if (!sort)
-        sort = '-created';
-
-    query.sort(sort).exec(function (err, posts) {
-        if (err) {
-            return res.status(400).send({
-                message: errorHandler.getErrorMessage(err)
-            });
-        } else {
-            res.jsonp(posts);
-        }
-    });
-};
-
 exports.postByID = function (req, res, next, id) {
     Post.findById(id).exec(function (err, post) {
         if (err) return next(err);
@@ -118,7 +81,7 @@ exports.postByID = function (req, res, next, id) {
     });
 };
 
-exports.hasAuthorization = function (req, res, next) {
+exports.isOwner = function (req, res, next) {
     if (req.post.user.id !== req.user.id) {
         return res.status(403).send({
             message: 'User is not authorized'
@@ -127,3 +90,27 @@ exports.hasAuthorization = function (req, res, next) {
     next();
 };
 
+exports.like = function(req, res) {
+
+    Like.findOne({user: req.user, post: req.post}).exec(function(err, liked) {
+
+        if(liked) {
+            liked.remove();
+            res.jsonp(liked);
+        }
+        else {
+            var like = new Like();
+            like.user = req.user;
+            like.post = req.post;
+            like.save();
+            res.jsonp(like);
+        }
+    });
+
+};
+
+exports.likes = function(req, res, next) {
+
+    next();
+
+};

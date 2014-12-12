@@ -26,7 +26,7 @@ exports.requiresLogin = function (req, res, next) {
 
 };
 
-exports.hasAuthorization = function (roles) {
+exports.isOwner = function (roles) {
     var _this = this;
 
     return function (req, res, next) {

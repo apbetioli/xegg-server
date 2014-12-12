@@ -5,53 +5,8 @@ var mongoose = require('mongoose'),
     Tag = mongoose.model('Tag'),
     _ = require('lodash');
 
-exports.create = function (req, res) {
-    var tag = new Tag(req.body);
-    tag.user = req.user;
-
-    tag.save(function (err) {
-        if (err) {
-            return res.status(400).send({
-                message: errorHandler.getErrorMessage(err)
-            });
-        } else {
-            res.jsonp(tag);
-        }
-    });
-};
-
 exports.read = function (req, res) {
     res.jsonp(req.tag);
-};
-
-exports.update = function (req, res) {
-    var tag = req.tag;
-
-    tag = _.extend(tag, req.body);
-
-    tag.save(function (err) {
-        if (err) {
-            return res.status(400).send({
-                message: errorHandler.getErrorMessage(err)
-            });
-        } else {
-            res.jsonp(tag);
-        }
-    });
-};
-
-exports.delete = function (req, res) {
-    var tag = req.tag;
-
-    tag.remove(function (err) {
-        if (err) {
-            return res.status(400).send({
-                message: errorHandler.getErrorMessage(err)
-            });
-        } else {
-            res.jsonp(tag);
-        }
-    });
 };
 
 exports.list = function (req, res) {
@@ -73,13 +28,4 @@ exports.tagByID = function (req, res, next, id) {
         req.tag = tag;
         next();
     });
-};
-
-exports.hasAuthorization = function (req, res, next) {
-    if (req.tag.user.id !== req.user.id) {
-        return res.status(403).send({
-            message: 'User is not authorized'
-        });
-    }
-    next();
 };

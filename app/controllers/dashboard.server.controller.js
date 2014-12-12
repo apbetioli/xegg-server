@@ -39,7 +39,6 @@ exports.mapReduce = function (req, res, next) {
             res.end('Erro');
             return;
         }
-        //console.log('Map reduce took %d ms', stats.processtime);
 
         next();
     });

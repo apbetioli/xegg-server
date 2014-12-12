@@ -51,18 +51,6 @@ exports.upload = function (req, res) {
 
 };
 
-exports.uploadForm = function (req, res) {
-
-    var form = '<!DOCTYPE HTML><html><body>' +
-        '<form method="post" action="/upload" enctype="multipart/form-data">' +
-        '<input type="file" name="image"/>' +
-        '<input type="submit" value="Upload" /></form>' +
-        '</body></html>';
-
-    res.writeHead(200, {'Content-Type': 'text/html'});
-    res.end(form);
-};
-
 exports.getMediaData = function (req, res) {
 
     var id = req.params.id;
