@@ -56,7 +56,7 @@ a {
 
 a:hover,
 a:focus {
-    color: #7b7b7b;
+    color: #ccc;
     text-decoration: none;
     outline: 0;
 }
