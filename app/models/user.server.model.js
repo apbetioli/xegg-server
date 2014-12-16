@@ -67,7 +67,12 @@ var UserSchema = new Schema({
     },
     message: {
         type: String
+    },
+    invite: {
+        type: Boolean,
+        default: false
     }
+
 });
 
 UserSchema.pre('save', function (next) {

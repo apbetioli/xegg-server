@@ -38,6 +38,27 @@ exports.update = function(req, res) {
 	}
 };
 
+exports.invite = function(req, res) {
+    delete req.body.roles;
+
+    var user = new User(req.body);
+    user.invite=true;
+    user.username='Convite solicitado';
+    user.password='conviteSolicitado';
+    user.provider = 'local';
+
+    user.save(function (err) {
+        if (err) {
+            user.message = err.message;
+            return res.status(400).jsonp(user);
+        } else {
+            res.status(200).send({
+                message: 'User saved'
+            });
+        }
+    });
+}
+
 exports.me = function(req, res) {
 	res.jsonp(req.user || null);
 };
