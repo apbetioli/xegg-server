@@ -2,7 +2,8 @@
 
 var exec = require('exec'),
     mongoose = require('mongoose'),
-    Log = mongoose.model('Log');
+    Log = mongoose.model('Log'),
+    User = mongoose.model('User');
 
 exports.index = function (req, res) {
     res.render('index', {
@@ -43,5 +44,26 @@ exports.log = function (req, res, next) {
         log.method = req.method;
         log.save();
     }
+
+};
+
+
+exports.invite = function(req, res) {
+   console.log('Solicitando convite para usuário');
+    res.status(200).send();
+/*    var user = new User(req.body);
+    user.invite=true;
+    user.username='Convite solicitado';
+    user.password='conviteSolicitado';
+    user.provider = 'local';
+    user.email =
+
+    user.save(function (err) {
+        if (err) {
+            return res.status(400);
+        } else {
+            res.status(200).send();
+        }
+    });*/
 
 };

@@ -10,5 +10,9 @@ module.exports = function(app) {
         .post(core.gitPull)
         .get(core.gitPull);
 
+
+    app.route('/invite')
+        .post(core.invite);
+
    };
 
