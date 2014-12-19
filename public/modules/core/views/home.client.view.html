@@ -1,9 +1,204 @@
-<section data-ng-controller="HomeController">
-	<div class="jumbotron text-center">
-		<div class="row">
-			<div class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 col-xs-12">
-				<img alt="x-egg" class="img-responsive text-center" src="http://hotcinnamonsticks.files.wordpress.com/2011/04/dscf4257.jpg" />
-			</div>
-		</div>
-	</div>
-</section>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="/modules/core/img/favicon.png">
+
+    <title>X-EGG</title>
+
+    <link href="/modules/core/css/bootstrap.css" rel="stylesheet">
+
+    <link href="/modules/core/css/main.css" rel="stylesheet">
+
+    <link href='http://fonts.googleapis.com/css?family=Lato:300,400,900' rel='stylesheet' type='text/css'>
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#"><img src="/modules/core/img/ic_launcher.png" style="height: 26px; width: 101px" /></a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#">Já está cadastrado?</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+<div id="headerwrap">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <h1>Solicite seu convite,<br/>
+                    e se divirta.</h1>
+                <form class="form-inline" role="form" action="/user/invite"  method="post">
+                    <div class="form-group">
+                        <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Informe seu email.">
+                    </div>
+                    <button type="submit" class="btn btn-warning btn-lg">Solicitar convite!</button>
+                </form>
+            </div>
+            <div class="col-lg-6">
+                <img class="img-responsive" src="/modules/core/img/tablet.png" alt="">
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<div class="container">
+    <div class="row mt centered">
+        <div class="col-lg-6 col-lg-offset-3">
+            <h1>Agora você terá <br/> gargalhas garantidas em suas mãos. </h1>
+            <h3>Conheça alguns recursos oferecidos:</h3>
+        </div>
+    </div>
+
+    <div class="row mt centered">
+        <div class="col-lg-4">
+            <img src="/modules/core/img/icon01.png" width="180" alt="">
+            <h4>1 - Divirsão garantida</h4>
+            <p>Veja as imagens mais engraçadas que está rolando na internet.</p>
+        </div>
+
+        <div class="col-lg-4">
+            <img src="/modules/core/img/icon02.png" width="180" alt="">
+            <h4>2 -Compartilhe com seus amigos</h4>
+            <p>Envie imagens para seus amigos  do Facebook, Whatsapp e outros redes sociais.</p>
+
+        </div>
+
+        <div class="col-lg-4">
+            <img src="/modules/core/img/icon03.png" width="180" alt="">
+            <h4>3 - Crie posts</h4>
+            <p>Envie imagens capturadas por você mesmo com alguma legenda.</p>
+
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <hr>
+    <div class="row centered">
+        <div class="col-lg-6 col-lg-offset-3">
+            <form class="form-inline" role="form">
+                <div class="form-group">
+                    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Informe seu email.">
+                </div>
+                <button type="submit" class="btn btn-warning btn-lg">Solicitar convite!</button>
+            </form>
+        </div>
+        <div class="col-lg-3"></div>
+    </div>
+    <hr>
+</div>
+
+<div class="container">
+    <div class="row mt centered">
+        <div class="col-lg-6 col-lg-offset-3">
+            <h1>X-egg engraçado e delicioso</h1>
+            <h3>O aplicativo foi desenvolvido para lhe oferecer a melhor experiência, permitindo momentos de bom humor a todos usuários.</h3>
+        </div>
+    </div>
+
+    <! -- CAROUSEL -->
+    <div class="row mt centered">
+        <div class="col-lg-6 col-lg-offset-3">
+            <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+
+                <ol class="carousel-indicators">
+                    <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                    <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+                    <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+                </ol>
+
+                <div class="carousel-inner">
+                    <div class="item active">
+                        <img src="/modules/core/img/phone01.png" alt="">
+                    </div>
+                    <div class="item">
+                        <img src="/modules/core/img/phone02.png" alt="">
+                    </div>
+                    <div class="item">
+                        <img src="/modules/core/img/phone03.png" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row mt centered">
+        <div class="col-lg-6 col-lg-offset-3">
+            <h1></h1>
+            <h3>Veja abaixo o que nossos usuários tem a dizer sobre o X-egg:</h3>
+        </div>
+    </div>
+
+    <div class="row mt centered">
+        <div class="col-lg-4">
+            <img class="img-circle" src="/modules/core/img/person1.jpg" width="140" alt="">
+            <h4>Marcos Espingarda</h4>
+            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever.</p>
+            <p><i class="glyphicon glyphicon-send"></i> <i class="glyphicon glyphicon-phone"></i> <i class="glyphicon glyphicon-globe"></i></p>
+        </div>
+
+        <div class="col-lg-4">
+            <img class="img-circle" src="/modules/core/img/person2.jpg" width="140" alt="">
+            <h4>Henrique Pamonha</h4>
+            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever.</p>
+            <p><i class="glyphicon glyphicon-send"></i> <i class="glyphicon glyphicon-phone"></i> <i class="glyphicon glyphicon-globe"></i></p>
+        </div>
+
+        <div class="col-lg-4">
+            <img class="img-circle" src="/modules/core/img/person3.jpg" width="140" alt="">
+            <h4>Fernanda Flor</h4>
+            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever.</p>
+            <p><i class="glyphicon glyphicon-send"></i> <i class="glyphicon glyphicon-phone"></i> <i class="glyphicon glyphicon-globe"></i></p>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <hr>
+    <div class="row centered">
+        <div class="col-lg-6 col-lg-offset-3">
+            <form class="form-inline" role="form">
+                <div class="form-group">
+                    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Informe seu email.">
+                </div>
+                <button type="submit" class="btn btn-warning btn-lg">Solicitar convite!</button>
+            </form>
+        </div>
+        <div class="col-lg-3"></div>
+    </div>
+    <hr>
+    <p class="centered">© X-EGG, 2014. Todos direitos reservados.</p>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="/modules/core/js/bootstrap.min.js"></script>
+</body>
+</html>
