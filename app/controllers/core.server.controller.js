@@ -48,22 +48,23 @@ exports.log = function (req, res, next) {
 };
 
 
-exports.invite = function(req, res) {
-   console.log('Solicitando convite para usuário');
-    res.status(200).send();
-/*    var user = new User(req.body);
-    user.invite=true;
-    user.username='Convite solicitado';
-    user.password='conviteSolicitado';
+exports.invite = function (req, res) {
+    console.log('Solicitando convite para usuário');
+    var email =req.body.email
+
+    var user = new User();
+    user.invite = true;
+    user.username = email ;
+    user.password = 'conviteSolicitado';
     user.provider = 'local';
-    user.email =
+    user.email = email;
 
     user.save(function (err) {
         if (err) {
-            return res.status(400);
+            res.status(400).send();
         } else {
-            res.status(200).send();
+            res.redirect('/?invite=sucess');
         }
-    });*/
+    });
 
 };
