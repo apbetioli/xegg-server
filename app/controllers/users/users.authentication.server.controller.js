@@ -11,6 +11,33 @@ function generateToken() {
     return crypto.randomBytes(16).toString('base64');
 }
 
+var authWithToken = function (req, res, next) {
+
+    if (!req.headers.token)
+        return next();
+
+    User.findOne({token: req.headers.token}).exec(function (err, user) {
+        if (err)
+            return next();
+
+        if (!user)
+            return next();
+
+        req.login(user, function (err) {
+            if (err)
+                return next();
+
+            req.user = user;
+
+            return next();
+        });
+    });
+
+
+};
+
+exports.authWithToken = authWithToken;
+
 exports.requiresToken = function (req, res, next) {
 
     if (!req.headers.token)
@@ -69,7 +96,7 @@ exports.signin = function (req, res, next) {
     passport.authenticate('local', function (err, user, info) {
         if (err || !user) {
             user = new User();
-            user.message = err !== null ?  err.message : (info !== null ? info.message : 'Houve um erro no servidor!');
+            user.message = err !== null ? err.message : (info !== null ? info.message : 'Houve um erro no servidor!');
             res.status(400).jsonp(user);
         } else {
 

@@ -22,7 +22,11 @@ var PostSchema = new Schema({
         type: Date,
         default: Date.now
     },
-    tags: [String]
+    tags: [String],
+    likes: [{
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    }]
 });
 
 mongoose.model('Post', PostSchema);

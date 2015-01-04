@@ -4,10 +4,9 @@ var mongoose = require('mongoose'),
     errorHandler = require('./errors'),
     Post = mongoose.model('Post'),
     Tag = mongoose.model('Tag'),
-    Like = mongoose.model('Like'),
     _ = require('lodash');
 
-var saveTags = function(req, res, next) {
+var saveTags = function (req, res, next) {
 
     var post = new Post(req.body);
     post.tags = [];
@@ -37,7 +36,6 @@ exports.saveTags = saveTags;
 
 var create = function (req, res) {
     var post = new Post(req.body);
-    //post.user = req.user;
 
     post.save(function (err) {
         if (err) {
@@ -90,27 +88,36 @@ exports.isOwner = function (req, res, next) {
     next();
 };
 
-exports.like = function(req, res) {
+exports.like = function (req, res, next) {
 
-    Like.findOne({user: req.user, post: req.post}).exec(function(err, liked) {
-
-        if(liked) {
-            liked.remove();
-            res.jsonp(liked);
-        }
-        else {
-            var like = new Like();
-            like.user = req.user;
-            like.post = req.post;
-            like.save();
-            res.jsonp(like);
-        }
-    });
+    Post.findByIdAndUpdate(req.body._id, {
+            $push: {
+                likes: req.user._id
+            }
+        },
+        {},
+        function (err, obj) {
+            if (err) {
+                next(err);
+            } else {
+                res.status(200).json(obj);
+            }
+        });
 
 };
 
-exports.likes = function(req, res, next) {
+exports.setLikes = function (req, res, next) {
 
     next();
+    /*
+    res.body.forEach( function(post, i, list) {
 
+        if (post.likes && post.likes.indexOf(req.user._id) > -1) {
+            post.like = true;
+        } else {
+            post.like = false;
+        }
+
+    });
+    */
 };
